@@ -14,10 +14,9 @@ function page() {
       </section>
 
       {/* product listing */}
-      <section className="w-full bg-green-50">
-        <div className="md:p-5 p-2 max-md:w-full">
-
-
+      <section className="w-full bg-green-50 lg:px-[10rem] px-[2rem] max-sm:px-0">
+        <div className="md:p-5 p-2 max-md:w-full flex justify-between items-center">
+          <h2> All products</h2>
           <div className=" bg-white w-fit rounded-md p-0 flex justify-evenly items-center">
             <input type="search" name="product" id="productname" className="p-2 px-4 rounded-md w-[25rem] max-md:w-full outline-none" placeholder="Search..." />
             <button className="h-full px-5 bg-blue-300 rounded-md">search</button>
@@ -25,7 +24,7 @@ function page() {
 
 
         </div>
-        <div className="w-full h-full bg-slate-300 p-5 md:px-10 customgrid">
+        <div className="w-full h-full bg-slate-300 customgrid">
           <ProductCard name="Noble" price="200" isDiscounted={false} image="" />
           <ProductCard name="Noble" price="200" isDiscounted={false} image="" />
           <ProductCard name="Noble" price="200" isDiscounted={false} image="" />

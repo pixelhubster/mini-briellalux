@@ -14,7 +14,8 @@ const ProductCard: React.FC<ProdDet> = ({ name, price, discount, isDiscounted, i
     const [isSaved, setIsSaved] = useState(false);
     const [inCart, setInCart] = useState(false);
     return (
-        <div className="min-w-[10rem] max-w-[14rem] m-1 md:h-[18rem] h-[18rem] bg-white shrink-0 border-solid border-2 border-blue-300 hover:border-blue-600 rounded-md overflow-hidden shadow-md hover:shadow-lg group/sl cursor-pointer">
+        // <div className="min-w-[10rem] max-w-[14rem] m-1 md:h-[18rem] h-[18rem] bg-white shrink-0 border-solid border-2 border-blue-300 hover:border-blue-600 rounded-md overflow-hidden shadow-md hover:shadow-lg group/sl cursor-pointer">
+        <div className="m-1 md:h-[20rem] h-[20rem] bg-white shrink-0 border-solid border-2 border-blue-300 hover:border-blue-600 rounded-md overflow-hidden shadow-md hover:shadow-lg group/sl cursor-pointer">
             {isDiscounted && (
                 <div className="p-1 px-2 pl-3 bg-blue-400 absolute top-10 rounded-r-md text-sm whitespace-nowrap cursor-default z-[1]">{discount}% off</div>
             )}
