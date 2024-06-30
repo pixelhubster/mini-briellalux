@@ -1,10 +1,22 @@
-"use client"
 import ProductCard from "@/components/card/product";
 import Navbar from "@/components/navbar";
 import React from "react";
 
+const getProducts = async () => {
+  try {
+    const products = await fetch("http://localhost:3000/api/product", {
+      cache: 'no-cache',
+    })
+    if (!products.ok) throw new Error("Failed to Fetch data")
+    return products.json()
+  } catch (error) {
+    console.log(error)
+  }
+}
 
-function page() {
+async function page() {
+  const products = await getProducts()
+  console.log(products)
   return (
     <>
       <Navbar />
@@ -14,7 +26,7 @@ function page() {
       </section>
 
       {/* product listing */}
-      <section className="w-full bg-green-50 lg:px-[10rem] px-[2rem] max-sm:px-0">
+      <section className="w-full bg-green-50 lg:px-[10rem] px-[2rem] max-sm:px-0 mb-[5rem]">
         <div className="md:p-5 p-2 max-md:w-full flex justify-between items-center">
           <h2> All products</h2>
           <div className=" bg-white w-fit rounded-md p-0 flex justify-evenly items-center">
@@ -25,21 +37,11 @@ function page() {
 
         </div>
         <div className="w-full h-full bg-slate-300 customgrid">
-          <ProductCard name="Noble" price="200" isDiscounted={false} image="" />
-          <ProductCard name="Noble" price="200" isDiscounted={false} image="" />
-          <ProductCard name="Noble" price="200" isDiscounted={false} image="" />
-          <ProductCard name="Noble" price="200" isDiscounted={false} image="" />
-          <ProductCard name="Noble" price="200" isDiscounted={false} image="" />
-          <ProductCard name="Noble" price="200" isDiscounted={false} image="" />
-          <ProductCard name="Noble" price="200" isDiscounted={false} image="" />
-          <ProductCard name="Noble" price="200" isDiscounted={false} image="" />
-          <ProductCard name="Noble" price="200" isDiscounted={false} image="" />
-          <ProductCard name="Noble" price="200" isDiscounted={false} image="" />
-          <ProductCard name="Noble" price="200" isDiscounted={false} image="" />
-          <ProductCard name="Noble" price="200" isDiscounted={false} image="" />
-          <ProductCard name="Noble" price="200" isDiscounted={false} image="" />
-          <ProductCard name="Noble" price="200" isDiscounted={false} image="" />
-          <ProductCard name="Noble" price="200" isDiscounted={false} image="" />
+          {products.map((product: any, key:number) => (
+            <ProductCard {...product} isDiscounted={false} key={key}/>
+          )
+          )}
+
         </div>
       </section>
     </>

@@ -1,4 +1,3 @@
-"use client"
 // import ChooseColorCard from '@/components/cards/chooseColorCard'
 // import ChooseRoundCard from '@/components/cards/chooseRoundCard'
 // import SizeCard from '@/components/cards/sizeCard'
@@ -9,7 +8,21 @@ import Navbar from '@/components/navbar'
 import React from 'react'
 import { FaStar } from 'react-icons/fa6'
 
-const page = ({ params }: { params: { prodid: string } }) => {
+const getProducts = async (id: string) => {
+  try {
+    const product = await fetch(`http://localhost:3000/api/product?id=${id}`, {
+      cache: 'no-cache',
+    })
+    if (!product.ok) throw new Error("Failed to Fetch data");
+    return product.json()
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const page = async ({ params }: { params: { prodid: string } }) => {
+  const product = await getProducts(params.prodid)
+  const { name, price, category, description, images, shipping,quantity } = product
   return (
     <div className='w-full h-[90rem] bg-white'>
       <Navbar />
@@ -30,8 +43,8 @@ const page = ({ params }: { params: { prodid: string } }) => {
         <div className='w-full min-h-[70vh] bg-slate-00 flex flex-col mt-5 max-sm:px-5'>
 
           <div className='w-full bg-yellow-00'>
-            <h3 className='font-semibold text-2xl'>Product Name: The longest product name, using this test the longitivity of the product name</h3>
-            <p className='text-sm'>Category Name</p>
+            <h3 className='font-semibold text-2xl'>{name}</h3>
+            <p className='text-sm'>{category}</p>
           </div>
 
           <div className='w-full h-full bg-white flex flex-col'>
@@ -41,9 +54,10 @@ const page = ({ params }: { params: { prodid: string } }) => {
               <div className='w-full bg-yellow-00 py-2 mt-5'>
                 <h3 className='font-semibold text-xl'>Price</h3>
                 <div className='text-3xl flex justify-start items-center font-semibold'>
-                  500
+                  {price}
                   <p className='text-sm'>Ghc</p>
                 </div>
+                <h3 className='text-md'>{quantity} items in stock</h3>
               </div>
 
               <div className='w-full bg-yellow-00 py-2 mt-5 flex'>
@@ -58,15 +72,13 @@ const page = ({ params }: { params: { prodid: string } }) => {
 
 
             <div className='w-full h-full bg-yellow-00'>
-
               <div className='w-full bg-yellow-00 py-2 mt-5'>
                 <h3 className='font-semibold text-xl'>Product Description</h3>
-                <p className='text-sm pt-5'>This is the description of the product detailed above, the product contains 70% sodium and 20% salt.
-                  This product is similar to many products out there but this is unique because it has a way to integrate the two elements without harming human body or cell.</p>
+                <p className='text-sm pt-5'>{description}</p>
               </div>
               <div className='w-full bg-yellow-00 py-2 mt-5'>
                 <h3 className='font-semibold text-xl'>Shipping Details</h3>
-                <p className='text-sm pt-5'>This product is available to all regions of accra. To request shipping to other parts of Ghana, Please do call us to confirm area.</p>
+                <p className='text-sm pt-5'>{shipping}</p>
               </div>
 
             </div>
