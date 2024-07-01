@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 type InitialState = {
-    value: SavedState;
+    value: CartState
 }
-type SavedState = {
+type CartState = {
     lastUpdated: string,
     products: string[]
 }
@@ -11,14 +11,14 @@ const initialState = {
     value: {
         lastUpdated: "",
         products: []
-    } as SavedState
+    } as CartState
 } as InitialState
 
-const saved = createSlice({
-    name: "saved",
+const cart = createSlice({
+    name: "cart",
     initialState,
     reducers: {
-        addItem: (state, action) => {
+        addToCart: (state, action) => {
             return {
                 value: {
                     lastUpdated: Date(),
@@ -26,17 +26,17 @@ const saved = createSlice({
                 }
             }
         },
-        removeItem: (state, action: PayloadAction<string>) => {
-            const newprod = state.value.products.filter(prod => prod !== action.payload);
+        removeFromCart: (state, action) => {
+            const newprod = state.value.products.filter(prod => prod !== action.payload)
             return {
                 value: {
                     lastUpdated: Date(),
                     products: newprod
                 }
             }
-        },
+        }
     }
 })
 
-export const {addItem, removeItem} = saved.actions
-export default saved.reducer
+export const { addToCart, removeFromCart} = cart.actions
+export default cart.reducer

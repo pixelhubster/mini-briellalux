@@ -5,7 +5,7 @@ import { FaHeartCircleCheck } from "react-icons/fa6";
 import { BsCartPlus, BsCartCheckFill } from "react-icons/bs";
 import { addItem, removeItem } from "@/lib/redux/features/saved-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { stat } from "fs";
+import { addToCart, removeFromCart } from "@/lib/redux/features/cart-slice";
 
 interface ProdDet {
     name: string;
@@ -18,18 +18,29 @@ interface ProdDet {
     images: string[];
 }
 const ProductCard: React.FC<ProdDet> = ({ name, price, discount, isDiscounted, images, _id, category, quantity }) => {
-    const [isSaved, setIsSaved] = useState(false);
-    const [inCart, setInCart] = useState(false);
+    const cart = useAppSelector(state => state.cartReducer)
+    const saved = useAppSelector(state => state.savedReducer)
+    const isInCart = cart.value.products.find(id => id === _id)
+    const isInSave = saved.value.products.find(id => id === _id)
+    const isInCartFn = () => typeof isInCart !== "undefined";
+    const isInSaveFn = () => typeof isInSave !== "undefined";
     const dispatch = useAppDispatch();
     const value = useAppSelector((state) => state.savedReducer.value);
     console.log(value)
     const clickSave = () => {
-        if (isSaved) {
+        if (isInSaveFn()) {
             dispatch(removeItem(_id))
-            setIsSaved(false)
         } else {
-            dispatch(addItem({_id, name, price, image: images[0]}))
-            setIsSaved(true)
+            dispatch(addItem(_id))
+        }
+    }
+    const ClickCart = () => {
+        if (isInCartFn()) {
+            dispatch(removeFromCart(_id))
+            // setInCart(isInCartFn())
+        } else {
+            dispatch(addToCart(_id))
+            // setInCart(isInCartFn())
         }
     }
     return (
@@ -42,7 +53,7 @@ const ProductCard: React.FC<ProdDet> = ({ name, price, discount, isDiscounted, i
                 <div className="uppercase tracking-wide flex justify-between text-[12px] font-semibold text-indigo-400">
                     <p>{category}</p>
                     <button className="h-full px-2 text-lg flex items-center justify-center font-bold" onClick={clickSave}>
-                        {isSaved ? <FaHeartCircleCheck /> : <CiHeart /> }
+                        {isInSaveFn() ? <FaHeartCircleCheck /> : <CiHeart /> }
                     </button>
                 </div>
                 <a className="mt-1 block md:leading-tight font-medium text-black leading-4 md:text-base text-md hover:underline md:min-h-[2.5rem] min-h-[2rem]" href={`/product/${_id}`}>{name}</a>
@@ -54,8 +65,8 @@ const ProductCard: React.FC<ProdDet> = ({ name, price, discount, isDiscounted, i
                         )}
                     </p>
                     
-                    <button className="text-xl text-blue-700" onClick={() => setInCart(!inCart)}>
-                        { inCart ? <BsCartCheckFill /> : <BsCartPlus />}
+                    <button className="text-xl text-blue-700" onClick={ClickCart} >
+                        {isInCartFn() ? <BsCartCheckFill /> : <BsCartPlus />}
                     </button>
                 </div>
             </div>

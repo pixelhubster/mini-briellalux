@@ -16,7 +16,6 @@ const getProducts = async () => {
 
 async function page() {
   const products = await getProducts()
-  console.log(products)
   return (
     <>
       <Navbar />
@@ -37,7 +36,7 @@ async function page() {
 
         </div>
         <div className="w-full h-full bg-slate-300 customgrid">
-          {products.map((product: any, key:number) => (
+          {products && products.map((product: any, key:number) => (
             <ProductCard {...product} isDiscounted={false} key={key}/>
           )
           )}
