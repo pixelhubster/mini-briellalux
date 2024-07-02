@@ -9,10 +9,12 @@ type SaveArg = {
     _id: string,
     price: number,
     name: string,
-    images: string[]
+    images: string[],
+    qty: number,
 }
-const CartCard: React.FC<SaveArg> = ({ _id, price, name, images}) => {
+const CartCard: React.FC<SaveArg> = ({ _id, price, name, images, qty}) => {
     const dispatch = useAppDispatch()
+    console.log(qty)
     const clickRemove = () => {
         dispatch(removeFromCart(_id))
     }
@@ -35,7 +37,7 @@ const CartCard: React.FC<SaveArg> = ({ _id, price, name, images}) => {
                     <p>Quantity</p>
                     <div>
                         <button className='p-1 px-2 bg-blue-300 '>+</button>
-                        <input type="number" name="number" id="" className='outline-none bg-gray-300 mx-1 w-[4rem] h-full px-2 font-medium' />
+                        <input type="number" name="number" id="" className='outline-none bg-gray-300 mx-1 w-[4rem] h-full px-2 font-medium' value={qty}/>
                         <button className='p-1 px-2 bg-blue-300 '>-</button>
                     </div>
                 </div>

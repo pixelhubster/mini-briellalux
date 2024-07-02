@@ -5,7 +5,10 @@ type InitialState = {
 }
 type CartState = {
     lastUpdated: string,
-    products: string[]
+    products: {
+        _id: string,
+        qty: number,
+    }[]
 }
 const initialState = {
     value: {
@@ -27,7 +30,7 @@ const cart = createSlice({
             }
         },
         removeFromCart: (state, action) => {
-            const newprod = state.value.products.filter(prod => prod !== action.payload)
+            const newprod = state.value.products.filter(prod => prod._id !== action.payload)
             return {
                 value: {
                     lastUpdated: Date(),

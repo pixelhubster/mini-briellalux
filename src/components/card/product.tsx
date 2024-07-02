@@ -20,13 +20,11 @@ interface ProdDet {
 const ProductCard: React.FC<ProdDet> = ({ name, price, discount, isDiscounted, images, _id, category, quantity }) => {
     const cart = useAppSelector(state => state.cartReducer)
     const saved = useAppSelector(state => state.savedReducer)
-    const isInCart = cart.value.products.find(id => id === _id)
+    const isInCart = cart.value.products.find(id => id._id === _id)
     const isInSave = saved.value.products.find(id => id === _id)
     const isInCartFn = () => typeof isInCart !== "undefined";
     const isInSaveFn = () => typeof isInSave !== "undefined";
     const dispatch = useAppDispatch();
-    const value = useAppSelector((state) => state.savedReducer.value);
-    console.log(value)
     const clickSave = () => {
         if (isInSaveFn()) {
             dispatch(removeItem(_id))
@@ -37,10 +35,8 @@ const ProductCard: React.FC<ProdDet> = ({ name, price, discount, isDiscounted, i
     const ClickCart = () => {
         if (isInCartFn()) {
             dispatch(removeFromCart(_id))
-            // setInCart(isInCartFn())
         } else {
-            dispatch(addToCart(_id))
-            // setInCart(isInCartFn())
+            dispatch(addToCart({_id, qty: 0}))
         }
     }
     return (

@@ -22,7 +22,6 @@ const Saved = () => {
     const value = useAppSelector((state) => state.savedReducer.value)
     const [products, setProducts] = useState<IProduct[]>([])
     const router = useRouter()
-    console.log(products)
     useEffect(() => {
         async function get() {
             value.products.length !== 0 ? setProducts(await getProducts(value.products)) : setProducts([])
