@@ -1,21 +1,18 @@
 "use client"
-import { useAppDispatch } from '@/lib/redux/hooks'
 import React, { useState } from 'react'
-import { toggle } from '@/lib/redux/features/model-slice';
 import { FaHeart } from 'react-icons/fa6';
 import Saved from '../saved';
-import { useRouter } from 'next/navigation';
 
 
 const SaveIcon = () => {
-  const router = useRouter()
+  const [opened, setOpened] = useState<boolean>(false)
   return (
     <>
-    
-    <div className='px-5 cursor-pointer'
-      onClick={() => router.push("/saved")
-      }
-        ><FaHeart /></div>
+      <div className='px-5 cursor-pointer'
+        onClick={() => setOpened(true)}
+      ><FaHeart />
+      </div>
+      {opened && <Saved fn={() => setOpened(false)} />}
     </>
   )
 }

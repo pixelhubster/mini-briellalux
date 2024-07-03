@@ -20,20 +20,20 @@ interface ProdDet {
 const ProductCard: React.FC<ProdDet> = ({ name, price, discount, isDiscounted, images, _id, category, quantity }) => {
     const cart = useAppSelector(state => state.cartReducer)
     const saved = useAppSelector(state => state.savedReducer)
-    const isInCart = cart.value.products.find(id => id._id === _id)
-    const isInSave = saved.value.products.find(id => id === _id)
-    const isInCartFn = () => typeof isInCart !== "undefined";
-    const isInSaveFn = () => typeof isInSave !== "undefined";
+    const isInCart = cart.value.products.findIndex(id => id._id === _id)
+    const isInSave = saved.value.products.findIndex(id => id === _id)
+    const isInCartFn = isInCart !== -1;
+    const isInSaveFn = isInSave !== -1;
     const dispatch = useAppDispatch();
     const clickSave = () => {
-        if (isInSaveFn()) {
+        if (isInSaveFn) {
             dispatch(removeItem(_id))
         } else {
             dispatch(addItem(_id))
         }
     }
     const ClickCart = () => {
-        if (isInCartFn()) {
+        if (isInCartFn) {
             dispatch(removeFromCart(_id))
         } else {
             dispatch(addToCart({_id, qty: 1}))
@@ -49,7 +49,7 @@ const ProductCard: React.FC<ProdDet> = ({ name, price, discount, isDiscounted, i
                 <div className="uppercase tracking-wide flex justify-between text-[12px] font-semibold text-indigo-400">
                     <p>{category}</p>
                     <button className="h-full px-2 text-lg flex items-center justify-center font-bold" onClick={clickSave}>
-                        {isInSaveFn() ? <FaHeartCircleCheck /> : <CiHeart /> }
+                        {isInSaveFn ? <FaHeartCircleCheck /> : <CiHeart /> }
                     </button>
                 </div>
                 <a className="mt-1 block md:leading-tight font-medium text-black leading-4 md:text-base text-md hover:underline md:min-h-[2.5rem] min-h-[2rem]" href={`/product/${_id}`}>{name}</a>
@@ -62,7 +62,7 @@ const ProductCard: React.FC<ProdDet> = ({ name, price, discount, isDiscounted, i
                     </p>
                     
                     <button className="text-xl text-blue-700" onClick={ClickCart} >
-                        {isInCartFn() ? <BsCartCheckFill /> : <BsCartPlus />}
+                        {isInCartFn ? <BsCartCheckFill /> : <BsCartPlus />}
                     </button>
                 </div>
             </div>

@@ -14,7 +14,8 @@ type SaveArg = {
 
 const SavedCard: React.FC<SaveArg> = ({ _id, price, name, images}) => {
     const cart = useAppSelector((state) => state.cartReducer)
-    const inCart = cart.value.products.find(id => id === _id)
+    const inCart = cart.value.products.findIndex(id => id._id === _id)
+    const isInCart = inCart !== -1
     const dispatch = useAppDispatch()
     const router = useRouter()
     const clickRemove = () => {
@@ -22,7 +23,8 @@ const SavedCard: React.FC<SaveArg> = ({ _id, price, name, images}) => {
         router.refresh()
     }
     const clickAdd = () => {
-        dispatch(addToCart(_id))
+        dispatch(addToCart({_id, qty: 1}))
+        router.refresh()
     }
     return (
         <div className='w-full h-fit flex flex-col justify-start bg-white shadow-0 border-2 border-solid border-slate-400 rounded-sm my-2 pb-3'>
@@ -36,7 +38,7 @@ const SavedCard: React.FC<SaveArg> = ({ _id, price, name, images}) => {
                 <div className='w-full h-full flex flex-col justify-start items-start p-1 text-sm'>
                     <p className=''>{name}</p>
                     <p className=''>Ghc {price}</p>
-                    {!inCart &&
+                    {!isInCart &&
                         <button className="bg-blue-500/80 p-1 px-5 rounded-sm my-2 hover:bg-blue-500"
                         onClick={clickAdd}>
                             Add to Cart
