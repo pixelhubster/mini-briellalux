@@ -4,11 +4,22 @@ import CheckoutCard from '@/components/card/checkoutCard'
 import OrderCard from '@/components/card/orderCard'
 // import ShippingaddressCard from '@/components/cards/shippingaddressCard'
 import SummaryCard from '@/components/card/summaryCard'
-import { useAppSelector } from '@/lib/redux/hooks'
-import React from 'react'
+import { addToCheckoutDB } from '@/lib/redux/features/checkout-slice'
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks'
+import React, { useEffect } from 'react'
 
 const page = () => {
+    const cart = useAppSelector((state) => state.cartReducer.value)
+    const dispatch = useAppDispatch()
+    useEffect(() => { 
+        async function fn() {
+            await dispatch(addToCheckoutDB(cart.products))
+            console.log("hiel")
+        }
+        fn()
+    })    
     const checkout = useAppSelector((state) => state.checkoutReducer.value)
+    console.log(checkout)
     return (
         <>
             <div className='w-full h-full flex justify-center items-center bg-slate-50'>

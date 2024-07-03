@@ -36,7 +36,7 @@ const ProductCard: React.FC<ProdDet> = ({ name, price, discount, isDiscounted, i
         if (isInCartFn()) {
             dispatch(removeFromCart(_id))
         } else {
-            dispatch(addToCart({_id, qty: 0}))
+            dispatch(addToCart({_id, qty: 1}))
         }
     }
     return (

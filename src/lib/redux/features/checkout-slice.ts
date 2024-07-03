@@ -36,21 +36,30 @@ export const addToCheckoutDB = createAsyncThunk("addToCheckoutThunk", async (id:
     })
     const res = await fetch(`http://localhost:3000/api/product?id=${idStack}`)
     const result = res.json()
-    return result
+    let newprod: IProductCheckout[] = []
+    for (const item of await res.json()) {
+        for (const value of id) {
+            if (item._id === value._id) {
+                newprod.push({ ...item, qty: value.qty})
+            }
+        }
+    }
+    console.log(newprod)
+    return newprod
 })
 
 const checkout = createSlice({
     name: "checkout",
     initialState,
     reducers: {
-        addToCheckout: (state, action) => {
-            return {
-                value: {
-                    products: action.payload,
-                    total: 0,
-                }
-            }
-        }
+        // addToCheckout: (state, action) => {
+        //     return {
+        //         value: {
+        //             products: action.payload,
+        //             total: 0,
+        //         }
+        //     }
+        // }
     },
     extraReducers(builder) {
         builder.addCase(addToCheckoutDB.fulfilled, (state, action: PayloadAction<IProductCheckout[]>) => {
@@ -60,12 +69,12 @@ const checkout = createSlice({
             return {
                 value: {
                     products: action.payload,
-                    total: 0
+                    total: 1
                 }
             }
         })
     },
 })
 
-export const { addToCheckout } = checkout.actions
+// export const { addToCheckout } = checkout.actions
 export default checkout.reducer

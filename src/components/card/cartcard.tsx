@@ -14,7 +14,6 @@ type SaveArg = {
 }
 const CartCard: React.FC<SaveArg> = ({ _id, price, name, images, qty}) => {
     const dispatch = useAppDispatch()
-    console.log(qty)
     const clickRemove = () => {
         dispatch(removeFromCart(_id))
     }

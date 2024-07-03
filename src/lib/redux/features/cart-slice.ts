@@ -10,8 +10,8 @@ type CartState = {
         qty: number,
     }[]
 }
-const initialState = {
-    value: {
+const initialState =  localStorage.getItem("cartData") ? JSON.parse(localStorage.getItem("cartData") as string) as InitialState : {
+    value:  {
         lastUpdated: "",
         products: []
     } as CartState
@@ -22,21 +22,25 @@ const cart = createSlice({
     initialState,
     reducers: {
         addToCart: (state, action) => {
-            return {
+            const newcart =  {
                 value: {
                     lastUpdated: Date(),
                     products: [...state.value.products, action.payload]
                 }
             }
+            localStorage.setItem("cartData",JSON.stringify(newcart))
+            return newcart
         },
         removeFromCart: (state, action) => {
             const newprod = state.value.products.filter(prod => prod._id !== action.payload)
-            return {
+            const newcart = {
                 value: {
                     lastUpdated: Date(),
                     products: newprod
                 }
             }
+            localStorage.setItem("cartData", JSON.stringify(newcart))
+            return newcart
         }
     }
 })

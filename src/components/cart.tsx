@@ -4,7 +4,7 @@ import CartCard from './card/cartcard'
 import Modal from './card/modal'
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks'
 import { useRouter } from 'next/navigation'
-import { addToCheckout, addToCheckoutDB, IProductCheckout } from '@/lib/redux/features/checkout-slice'
+import { addToCheckoutDB, IProductCheckout } from '@/lib/redux/features/checkout-slice'
 
 const getProducts = async (id: {_id: string, qty: number}[]) => {
     let idStack: string[] = []
@@ -36,9 +36,10 @@ const Cart = () => {
     const [products, setProducts] = useState<IProductCheckout[]>([])
     const router = useRouter()
     const dispatch = useAppDispatch()
+    const checkout = useAppSelector((state) => state.checkoutReducer.value)
     const ClickCheckout = async () => {
         dispatch(addToCheckoutDB(value.products))
-        router.replace("/checkout")
+        console.log(checkout)
     }
     useEffect(() => {
         async function get() {
