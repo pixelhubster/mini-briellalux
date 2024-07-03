@@ -2,7 +2,7 @@ import React from 'react'
 
 const PaymentInstructionBoard = ({ fn }: { fn: Function }) => {
     return (
-        <div className='w-full h-full flex justify-center z-[1] fixed top-0 p-5' 
+        <div className='w-full h-full flex justify-center z-[3] fixed top-0 left-0 p-5' 
         onClick={(e) => e.target === e.currentTarget && fn()}>
             <div className='md:w-[50rem] w-full m-5 h-[40rem] p-10 bg-slate-200 mt-10 rounded-md shadow-md flex flex-col items-center'>
                 <h3 className='font-bold text-2xl font-serif'>PAYMENT INSTRUCTION</h3>
@@ -26,7 +26,7 @@ const PaymentInstructionBoard = ({ fn }: { fn: Function }) => {
                     <input type="tel" name="ref4" id="ref4" className='max-w-[5rem] max-sm:scale-90 h-[4rem] rounded-2xl outline-none font-mono flex justify-center items-center text-[2rem] text-center focus:outline-2 focus:outline-blue-500' readOnly maxLength={1} value={0} />
                     <input type="tel" name="ref5" id="ref5" className='max-w-[5rem] max-sm:scale-90 h-[4rem] rounded-2xl outline-none font-mono flex justify-center items-center text-[2rem] text-center focus:outline-2 focus:outline-blue-500' readOnly maxLength={1} value={0} />
                 </div>
-                <button className=' p-2 bg-green-400 px-[4rem] m-5 rounded-md'>Completed Payment</button>
+                <button className=' p-2 bg-green-400 px-[4rem] m-5 rounded-md'>I have completed payment</button>
             </div>
         </div>
     )

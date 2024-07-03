@@ -40,7 +40,6 @@ const Cart = ({ fn }: { fn: Function }) => {
     const ClickCheckout = async () => {
         dispatch(addToCheckoutDB(value.products))
         router.push("http://localhost:3000/checkout")
-        console.log(checkout)
     }
     useEffect(() => {
         async function get() {
