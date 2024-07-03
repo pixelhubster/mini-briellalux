@@ -1,9 +1,12 @@
 import React from 'react'
+import Modal from '../card/modal'
 
 const PaymentInstructionBoard = ({ fn }: { fn: Function }) => {
     return (
-        <div className='w-full h-full flex justify-center z-[3] fixed top-0 left-0 p-5' 
-        onClick={(e) => e.target === e.currentTarget && fn()}>
+        // <div className='w-full h-full flex justify-center z-[3] fixed top-0 left-0 p-5' 
+        // onClick={(e) => e.target === e.currentTarget && fn()}>
+        <Modal fn={fn}>
+
             <div className='md:w-[50rem] w-full m-5 h-[40rem] p-10 bg-slate-200 mt-10 rounded-md shadow-md flex flex-col items-center'>
                 <h3 className='font-bold text-2xl font-serif'>PAYMENT INSTRUCTION</h3>
                 <div className='w-full h-fit p-5 bg-gray-200 border-gray-300 border-solid border-2 rounded-md mt-10'>
@@ -28,7 +31,7 @@ const PaymentInstructionBoard = ({ fn }: { fn: Function }) => {
                 </div>
                 <button className=' p-2 bg-green-400 px-[4rem] m-5 rounded-md'>I have completed payment</button>
             </div>
-        </div>
+        </Modal>
     )
 }
 
