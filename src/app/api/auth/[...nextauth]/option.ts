@@ -10,21 +10,24 @@ export const nextOption: NextAuthOptions = {
         Credentials({
             name: "credentials",
             credentials: {
-                username: { label: "username", type: "text"},
-                password: { label: "password", type: "text"}
+                username: { label: "username", type: "text" },
+                password: { label: "password", type: "text" }
             },
             async authorize(credentials: any): Promise<any> {
-                const { username, password} = credentials
-                console.log("done")
-                console.log(username, password)
+                const { username, password } = credentials
                 try {
                     await connectMongoDB()
                     const user = await User.findOne({ email: username }) || await User.findOne({ number: username })
                     if (user === null) throw new Error("User isn't registered");
                     const hash = await bcrypt.compare(password, user.password)
                     if (!hash) throw new Error("Credentials Invalid")
-                    return user
-                } catch(error: any) {
+                    return {
+                        id: user._id,
+                        name: user.firstname + " " + user.lastname,
+                        email: user.email,
+                    }
+
+                } catch (error: any) {
                     throw new Error(error?.message)
                 }
             }

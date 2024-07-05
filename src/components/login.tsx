@@ -13,7 +13,7 @@ const Login = () => {
     setError(null)
     e.preventDefault()
     try {
-      data && await signOut()
+      data && await signOut({ redirect: false})
       const res = await signIn("credentials", {
         username: details.username,
         password: details.password,

@@ -1,3 +1,4 @@
+import Profile from "@/components/boards/profile";
 import ProductCard from "@/components/card/product";
 import Navbar from "@/components/navbar";
 import React from "react";
@@ -43,6 +44,7 @@ async function page() {
 
         </div>
       </section>
+      <Profile />
     </>
 
 
