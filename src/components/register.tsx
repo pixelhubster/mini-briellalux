@@ -14,7 +14,7 @@ const Register = () => {
         password: "",
     })
     const router = useRouter()
-    const [error, setError] = useState<String | null>(null)
+    const [error, setError] = useState<String|null>(null)
     const areDetailsEmpty = () => {
         return Object.values(details).every(value => value !== "")
     }
@@ -106,7 +106,7 @@ const Register = () => {
                         {/* <a href='' className='text-blue-900 mt-10 mb-10 text-sm'>a</a> */}
                         <button type='submit' className='p-2 bg-blue-500 lg:w-[80%] w-full rounded-md text-white shadow-sm'>Register</button>
                         <br />
-                        <a href='' className='text-black mt-2 mb-0 text-sm p-2'>Already have an Account? <b className='text-blue-800 underline'>Login</b></a>
+                        <a href='/signin' className='text-black mt-2 mb-0 text-sm p-2'>Already have an Account? <b className='text-blue-800 underline'>Login</b></a>
 
                     </form>
 
