@@ -44,7 +44,6 @@ async function page() {
 
         </div>
       </section>
-      <Profile />
     </>
 
 

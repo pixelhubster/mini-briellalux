@@ -5,6 +5,7 @@ import SaveIcon from './card/save-icon';
 import CartIcon from './card/cart-icon';
 import { useSession } from 'next-auth/react';
 import UserCard from './card/user-card';
+import Profile from './boards/profile';
 
 const Navbar = () => {
   const {data} = useSession()
