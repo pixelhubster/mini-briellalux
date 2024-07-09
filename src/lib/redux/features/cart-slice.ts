@@ -63,9 +63,16 @@ const cart = createSlice({
             }
             localStorage.setItem("cartData", JSON.stringify(newcart))
             return newcart
+        },
+        changeQuantity: (state, action: PayloadAction<{_id: string, qty: number}>) => {
+            const {_id, qty} = action.payload
+            const index = state.value.products.findIndex(prod => prod._id === _id)
+            if (index !== -1) {
+                state.value.products[index].qty = qty
+            }
         }
     }
 })
 
-export const { addToCart, removeFromCart } = cart.actions
+export const { addToCart, removeFromCart, changeQuantity } = cart.actions
 export default cart.reducer

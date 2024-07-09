@@ -22,9 +22,10 @@ export const nextOption: NextAuthOptions = {
                     const hash = await bcrypt.compare(password, user.password)
                     if (!hash) throw new Error("Credentials Invalid")
                     return {
-                        id: user._id,
+                        _id: user._id,
                         name: user.firstname + " " + user.lastname,
                         email: user.email,
+                        number: user.number,
                     }
 
                 } catch (error: any) {
@@ -34,6 +35,23 @@ export const nextOption: NextAuthOptions = {
         })
 
     ],
+    callbacks: {
+        async jwt({token, user}) {
+            if (user) {
+                return {
+                    ...token,
+                    _id: (user as any)._id,
+                    number: (user as any).number,
+                }
+            }
+            return token
+        },
+        async session({ session, token}) {
+            session.user._id = token._id as string
+            session.user.number = token.number as number
+            return session
+        },
+    },
     session: {
         strategy: "jwt"
     },

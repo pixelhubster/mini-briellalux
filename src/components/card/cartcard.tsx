@@ -1,8 +1,8 @@
 "use client"
-import { removeFromCart } from '@/lib/redux/features/cart-slice'
-import { useAppDispatch } from '@/lib/redux/hooks'
+import { changeQuantity, removeFromCart } from '@/lib/redux/features/cart-slice'
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 
 type SaveArg = {
@@ -10,12 +10,27 @@ type SaveArg = {
     price: number,
     name: string,
     images: string[],
-    qty: number,
 }
-const CartCard: React.FC<SaveArg> = ({ _id, price, name, images, qty}) => {
+const CartCard: React.FC<SaveArg> = ({ _id, price, name, images}) => {
+    const cart = useAppSelector((state) => state.cartReducer.value)
+    const index = cart.products.findIndex(prod => prod._id === _id)
+    const currentqty = useRef(index !== -1 ? cart.products[index].qty : 0)
+    const [quan, setQuan] = useState(currentqty.current)
+    const router = useRouter()
     const dispatch = useAppDispatch()
+    const add = () => {
+        currentqty.current >= 1 ? currentqty.current++ : currentqty.current = 1
+        dispatch(changeQuantity({_id, qty: currentqty.current}))
+        setQuan(cart.products[index].qty)
+    }
+    const sub = () => {
+        currentqty.current > 1 ? currentqty.current-- : currentqty.current = 1
+        dispatch(changeQuantity({_id, qty: currentqty.current}))
+        setQuan(cart.products[index].qty)
+    }
     const clickRemove = () => {
         dispatch(removeFromCart(_id))
+        router.refresh()
     }
     return (
         <div className='w-full h-fit flex flex-col justify-start bg-white shadow-0 border-2 border-solid border-slate-400 rounded-sm my-2 pb-3'>
@@ -34,10 +49,10 @@ const CartCard: React.FC<SaveArg> = ({ _id, price, name, images, qty}) => {
                     <p>QTY: 1</p>
                     <p className='font-semibold'>Ghc {price}</p>
                     <p>Quantity</p>
-                    <div>
-                        <button className='p-1 px-2 bg-blue-300 '>+</button>
-                        <input type="number" name="number" id="" className='outline-none bg-gray-300 mx-1 w-[4rem] h-full px-2 font-medium' value={qty}/>
-                        <button className='p-1 px-2 bg-blue-300 '>-</button>
+                    <div className='flex h-fit'>
+                        <button className='p-1 px-2 bg-blue-300 rounded-sm' onClick={add}>+</button>
+                        <div className='px-3 flex h-[content] bg-red-00 justify-center items-center'>{currentqty.current}</div>
+                        <button className='p-1 px-2 bg-blue-300 rounded-sm' onClick={sub}>-</button>
                     </div>
                 </div>
             </div>

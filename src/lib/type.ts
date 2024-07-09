@@ -10,4 +10,16 @@ type IProduct = {
     category: string,
 }
 
-export type {IProduct};
+type IShipping = {
+    name: string,
+    state: string, 
+    city: string,
+    phonenumber: number,
+    altphonenumber: number,
+    address: string,
+    altaddress: string,
+    userid: string,
+    _id: string
+}
+
+export type {IProduct, IShipping};

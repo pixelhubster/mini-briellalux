@@ -5,12 +5,10 @@ import SaveIcon from './card/save-icon';
 import CartIcon from './card/cart-icon';
 import { useSession } from 'next-auth/react';
 import UserCard from './card/user-card';
-import Profile from './boards/profile';
 
 const Navbar = () => {
   const {data} = useSession()
   const [opened, setOpened] = useState(false)
-  console.log(data)
   return (
     <div className="w-full h-[4rem] bg-red-200 px-5 flex justify-between items-center">
       logo and name
