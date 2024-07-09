@@ -12,7 +12,7 @@ type IProduct = {
 
 type IShipping = {
     name: string,
-    state: string, 
+    state: string,
     city: string,
     phonenumber: number,
     altphonenumber: number,
@@ -22,4 +22,18 @@ type IShipping = {
     _id: string
 }
 
-export type {IProduct, IShipping};
+type IOrder = {
+    userid: string,
+    status: string,
+    total_price: number,
+    refcode: string
+}
+
+type INotification = {
+    id: string,
+    userid: string,
+    header: string,
+    info: string
+}
+
+export type { IProduct, IShipping, IOrder, INotification };
