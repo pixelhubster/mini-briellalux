@@ -36,4 +36,10 @@ type INotification = {
     info: string
 }
 
-export type { IProduct, IShipping, IOrder, INotification };
+type ICart = {
+    _id: string,
+    productid: string,
+    quantity: number,
+}
+
+export type { IProduct, IShipping, IOrder, INotification, ICart };

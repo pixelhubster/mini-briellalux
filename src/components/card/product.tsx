@@ -5,7 +5,7 @@ import { FaHeartCircleCheck } from "react-icons/fa6";
 import { BsCartPlus, BsCartCheckFill } from "react-icons/bs";
 import { addItem, removeItem } from "@/lib/redux/features/saved-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { addToCart, removeFromCart } from "@/lib/redux/features/cart-slice";
+import { addToCart, removeFromCart, syncCart } from "@/lib/redux/features/cart-slice";
 
 interface ProdDet {
     name: string;
@@ -18,10 +18,12 @@ interface ProdDet {
     images: string[];
 }
 const ProductCard: React.FC<ProdDet> = ({ name, price, discount, isDiscounted, images, _id, category, quantity }) => {
-    const cart = useAppSelector(state => state.cartReducer)
-    const saved = useAppSelector(state => state.savedReducer)
-    const isInCart = cart.value.products.findIndex(id => id._id === _id)
-    const isInSave = saved.value.products.findIndex(id => id === _id)
+    const cart = useAppSelector(state => state.cartReducer.value)
+    const saved = useAppSelector(state => state.savedReducer.value)
+    console.log(cart)
+    const isInCart = cart.products.findIndex(item => item.productid === _id)
+    // const isInCart: number = 1
+    const isInSave = saved.products.findIndex(id => id === _id)
     const isInCartFn = isInCart !== -1;
     const isInSaveFn = isInSave !== -1;
     const dispatch = useAppDispatch();
@@ -34,11 +36,16 @@ const ProductCard: React.FC<ProdDet> = ({ name, price, discount, isDiscounted, i
     }
     const ClickCart = () => {
         if (isInCartFn) {
-            dispatch(removeFromCart(_id))
+            dispatch(syncCart({method: "DELETE", productid: _id,})).then(() => 
+                dispatch(removeFromCart(_id))
+            )
         } else {
-            dispatch(addToCart({_id, qty: 1}))
+            dispatch(syncCart({method: "POST", productid: _id, quantity: 1})).then(() => 
+                dispatch(syncCart({method: "GET"}))
+            )
         }
     }
+    // dispatch(addToCart({productid: _id, quantity: 1}))
     return (
         <div className="m-1 md:h-[20rem] h-[20rem] bg-white shrink-0 border-solid border-2 border-blue-300 hover:border-blue-600 rounded-md overflow-hidden shadow-md hover:shadow-lg group/sl cursor-pointer">
             {isDiscounted && (

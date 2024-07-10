@@ -1,8 +1,8 @@
 "use client"
-import { changeQuantity, removeFromCart } from '@/lib/redux/features/cart-slice'
+import { changeQuantity, removeFromCart, syncCart } from '@/lib/redux/features/cart-slice'
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks'
 import { useRouter } from 'next/navigation'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { Ref, useEffect, useMemo, useRef, useState } from 'react'
 
 
 type SaveArg = {
@@ -11,26 +11,44 @@ type SaveArg = {
     name: string,
     images: string[],
 }
-const CartCard: React.FC<SaveArg> = ({ _id, price, name, images}) => {
+
+const useDebounce = (callback: Function, delay: number) => {
+    const timer: any = useRef()
+    return (...args: any) => {
+        clearTimeout(timer.current)
+        timer.current = setTimeout(() => {
+            callback(...args)
+        }, delay)
+    }
+}
+const CartCard: React.FC<SaveArg> = ({ _id, price, name, images }) => {
     const cart = useAppSelector((state) => state.cartReducer.value)
-    const index = cart.products.findIndex(prod => prod._id === _id)
-    const currentqty = useRef(index !== -1 ? cart.products[index].qty : 0)
+    const index = cart.products.findIndex(prod => prod.productid === _id)
+    const currentqty = useRef(index !== -1 ? cart.products[index].quantity : 0)
     const [quan, setQuan] = useState(currentqty.current)
     const router = useRouter()
     const dispatch = useAppDispatch()
+    const denounce = useDebounce(() => {
+        dispatch(syncCart({ method: "PUT", productid: _id, quantity: currentqty.current }))
+    }, 200)
     const add = () => {
         currentqty.current >= 1 ? currentqty.current++ : currentqty.current = 1
-        dispatch(changeQuantity({_id, qty: currentqty.current}))
-        setQuan(cart.products[index].qty)
+        dispatch(changeQuantity({ _id, quantity: currentqty.current }))
+        // setQuan(cart.products[index].quantity)
     }
+    useEffect(() => {
+        denounce()
+        console.log("clicked")
+    }, [currentqty.current])
     const sub = () => {
         currentqty.current > 1 ? currentqty.current-- : currentqty.current = 1
-        dispatch(changeQuantity({_id, qty: currentqty.current}))
-        setQuan(cart.products[index].qty)
+        dispatch(changeQuantity({ _id, quantity: currentqty.current }))
+        // setQuan(cart.products[index].quantity)
     }
     const clickRemove = () => {
-        dispatch(removeFromCart(_id))
-        router.refresh()
+        dispatch(syncCart({ method: "DELETE", productid: _id,})).then(() =>
+            dispatch(removeFromCart(_id))
+        )
     }
     return (
         <div className='w-full h-fit flex flex-col justify-start bg-white shadow-0 border-2 border-solid border-slate-400 rounded-sm my-2 pb-3'>
@@ -50,9 +68,9 @@ const CartCard: React.FC<SaveArg> = ({ _id, price, name, images}) => {
                     <p className='font-semibold'>Ghc {price}</p>
                     <p>Quantity</p>
                     <div className='flex h-fit'>
-                        <button className='p-1 px-2 bg-blue-300 rounded-sm' onClick={add}>+</button>
-                        <div className='px-3 flex h-[content] bg-red-00 justify-center items-center'>{currentqty.current}</div>
                         <button className='p-1 px-2 bg-blue-300 rounded-sm' onClick={sub}>-</button>
+                        <div className='px-3 flex h-[content] bg-red-00 justify-center items-center'>{currentqty.current}</div>
+                        <button className='p-1 px-2 bg-blue-300 rounded-sm' onClick={add}>+</button>
                     </div>
                 </div>
             </div>

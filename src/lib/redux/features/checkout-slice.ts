@@ -1,4 +1,4 @@
-import { IProduct } from "@/lib/type";
+import { ICart, IProduct } from "@/lib/type";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 
@@ -29,18 +29,18 @@ const initialState = {
     } as CheckoutState
 } as InitialState
 
-export const addToCheckoutDB = createAsyncThunk("addToCheckoutThunk", async (id: { _id: string, qty: number }[],) => {
+export const addToCheckoutDB = createAsyncThunk("addToCheckoutThunk", async (id: ICart[],) => {
     let idStack: string[] = []
     id.forEach((prod) => {
-        idStack.push(prod._id)
+        idStack.push(prod.productid)
     })
     const res = await fetch(`http://localhost:3000/api/product?id=${idStack}`)
-    const result = res.json()
+    const result = await res.json()
     let newprod: IProductCheckout[] = []
-    for (const item of await result) {
+    for (const item of result) {
         for (const value of id) {
-            if (item._id === value._id) {
-                newprod.push({ ...item, qty: value.qty })
+            if (item._id === value.productid) {
+                newprod.push({ ...item, qty: value.quantity })
             }
         }
     }

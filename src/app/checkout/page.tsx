@@ -1,6 +1,5 @@
 import Checkout from '@/components/checkout'
 
-
 const page = () => {
     return (
         <>
